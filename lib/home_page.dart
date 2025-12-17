@@ -35,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
             .uploadBinary(
               filePath,
               bytes,
-              fileOptions: const FileOptions(contentType: 'image/png'),
+              fileOptions: const FileOptions (contentType: 'image/png'),
             );
       } else {
         final file = File(picked.path);
@@ -68,11 +68,39 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Supabase Upload Image'),
+      appBar: AppBar(title: const Text('Supabase Image Upload'),
+      centerTitle: true,
       ),
-      body: const Center(
-        child: Text('Home Page'),
+      body: Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            if (_isUploading) const LinearProgressIndicator(),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _isUploading ? null : _pickAndUploadToPublicBucket,
+              child: const Text('Pilih & Upload Gambar'),
+            ),
+            const SizedBox(height: 24),
+            if (_publicImageUrl != null) ...[
+              const Text(
+                'Gambar dari Public URL:',
+                textAlign: TextAlign.center,),
+              const SizedBox(height: 8),
+              Expanded(child: Image.network(
+                _publicImageUrl!,
+                alignment: Alignment.center,)),
+              const SizedBox(height: 8),
+              SelectableText(
+                _publicImageUrl!,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 12),
+              ),
+            ],
+          ],
+        ),
+      ),
       ),
     );
   }
